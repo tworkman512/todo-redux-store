@@ -123,7 +123,7 @@ store.dispatch({
 
 store.dispatch({
   type: 'ADD_GOAL',
-  todo: {
+  goal: {
     id: 0,
     name: 'Learn Redux',
   }
@@ -131,7 +131,7 @@ store.dispatch({
 
 store.dispatch({
   type: 'ADD_GOAL',
-  todo: {
+  goal: {
     id: 1,
     name: 'Learn Redux some more!',
   }
@@ -139,7 +139,7 @@ store.dispatch({
 
 store.dispatch({
   type: 'REMOVE_GOAL',
-  todo: {
+  goal: {
     id: 0,
     name: 'Learn Redux some more!',
   }
