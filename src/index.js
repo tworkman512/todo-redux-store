@@ -1,3 +1,7 @@
+function generateId() {
+  return Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36)
+}
+
 // LIBRARY CODE
 function createStore(reducer) {
   // The store should have four parts
@@ -123,42 +127,65 @@ store.subscribe(() => {
   console.log('The new state is: ', store.getState())
 })
 
-store.dispatch(addTodoAction({
-  id: 0,
-  name: 'Learn Redux',
-  complete: false,
-}))
-
-store.dispatch(addTodoAction({
-  id: 1,
-  name: 'Learn Redux some more!',
-  complete: false,
-}))
-
-store.dispatch(addTodoAction({
-  id: 1,
-  name: 'Go roll some jiu-jitsu',
-  complete: true,
-}))
-
-store.dispatch(removeTodoAction(1))
-
-store.dispatch(toggleTodoAction(0))
-
-store.dispatch(addGoalAction({
-  id: 0,
-  name: 'Learn Redux',
-}))
-
-store.dispatch(addGoalAction({
-  id: 1,
-  name: 'Learn Redux some more!',
-}))
-
-store.dispatch(removeGoalAction(0))
-
-// const unsubscribe = store.subscribe(() => {
-//   console.log('The store changed.')
-// })
+// store.dispatch(addTodoAction({
+//   id: 0,
+//   name: 'Learn Redux',
+//   complete: false,
+// }))
 //
-// unsubscribe()
+// store.dispatch(addTodoAction({
+//   id: 1,
+//   name: 'Learn Redux some more!',
+//   complete: false,
+// }))
+//
+// store.dispatch(addTodoAction({
+//   id: 1,
+//   name: 'Go roll some jiu-jitsu',
+//   complete: true,
+// }))
+//
+// store.dispatch(removeTodoAction(1))
+//
+// store.dispatch(toggleTodoAction(0))
+//
+// store.dispatch(addGoalAction({
+//   id: 0,
+//   name: 'Learn Redux',
+// }))
+//
+// store.dispatch(addGoalAction({
+//   id: 1,
+//   name: 'Learn Redux some more!',
+// }))
+//
+// store.dispatch(removeGoalAction(0))
+
+function addTodo() {
+  const input = document.getElementById('todo')
+  const name = input.value
+  input.value = ''
+
+  store.dispatch(addTodoAction({
+    name,
+    complete: false,
+    id: generateId(),
+  }))
+}
+
+function addGoal() {
+  const input = document.getElementById('goal')
+  const name = input.value
+  input.value = ''
+
+  store.dispatch(addGoalAction({
+    name,
+    id: generateId(),
+  }))
+}
+
+document.getElementById('todoBtn')
+  .addEventListener('click', addTodo)
+
+document.getElementById('goalBtn')
+  .addEventListener('click', addGoal)
