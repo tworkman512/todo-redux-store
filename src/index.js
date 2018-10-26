@@ -2,44 +2,6 @@ function generateId() {
   return Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36)
 }
 
-// LIBRARY CODE
-function createStore(reducer) {
-  // The store should have four parts
-  // 1. The state or "state tree"
-  // 2. Get the state.
-  // 3. Listen to changes on the state.
-  // 4. Update the state
-
-  // This holds the state of the entire app
-  let state
-  let listeners = []
-
-  // This gets the state
-  const getState = () => state
-
-  // This listens for changes to state
-  const subscribe = (listner) => {
-    listeners.push(listner)
-    return () => {
-      listeners = listeners.filter((l) => l !== listener)
-    }
-  }
-
-  // This dispatches updates to the state
-  const dispatch = (action) => {
-    state = reducer(state, action)
-    listeners.forEach((listener) => listener())
-  }
-
-  return {
-    // Whenever createStore is envoked, we want to return an object.
-    // the getState object will then return us the existing state variable.
-    getState,
-    subscribe,
-    dispatch,
-  }
-}
-
 // APP CODE
 const ADD_TODO = 'ADD_TODO'
 const REMOVE_TODO = 'REMOVE_TODO'
@@ -110,18 +72,11 @@ function goals(state = [], action) {
   }
 }
 
-function app(state = {}, action) {
-  // return a state object that has todos and goals properties
-  // value of those properties is a reducer function that manages
-  // slices of that state
-  return {
-    todos: todos(state.todos, action),
-    goals: goals(state.goals, action),
-  }
-}
-
 // pass createStore the main app function/root reducer
-const store = createStore(app)
+const store = Redux.createStore(Redux.combineReducers({
+  todos,
+  goals,
+}))
 // event listener
 store.subscribe(() => {
   console.log('The new state is: ', store.getState())
