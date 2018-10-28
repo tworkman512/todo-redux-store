@@ -32,11 +32,44 @@
     <div id='app'></div>
     <script src='index.js'></script>
     <script type='text/babel'>
+      function List(props) {
+        return (
+          <ul>
+            <li>LIST</li>
+          </ul>
+        )
+      }
+
+      class Todos extends React.Component {
+        render() {
+          return (
+            <div>
+              TODOS
+
+              <List />
+            </div>
+          )
+        }
+      }
+
+      class Goals extends React.Component {
+        render() {
+          return (
+            <div>
+              GOALS
+
+              <List />
+            </div>
+          )
+        }
+      }
+
       class App extends React.Component {
         render() {
           return (
             <div>
-              APP
+              <Todos />
+              <Goals />
             </div>
           )
         }
