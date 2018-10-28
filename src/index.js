@@ -72,7 +72,7 @@ function goals(state = [], action) {
   }
 }
 
-function checkAndDispatch(store, action) {
+const checker = (store) => (next) => (action) => {
   if (
     action.type === ADD_TODO &&
     action.todo.name.toLowerCase().includes('bitcoin')
@@ -87,14 +87,15 @@ function checkAndDispatch(store, action) {
     return alert("Nope. That's a bad idea.")
   }
 
-  return store.dispatch(action)
+  return next(action)
 }
+
 
 // pass createStore the main app function/root reducer
 const store = Redux.createStore(Redux.combineReducers({
   todos,
   goals,
-}))
+}), Redux.applyMiddleware(checker))
 // event listener
 store.subscribe(() => {
   console.log('The new state is: ', store.getState())
@@ -113,7 +114,7 @@ function addTodo() {
   const name = input.value
   input.value = ''
 
-  checkAndDispatch(store, addTodoAction({
+  store.dispatch(addTodoAction({
     name,
     complete: false,
     id: generateId(),
@@ -125,7 +126,7 @@ function addGoal() {
   const name = input.value
   input.value = ''
 
-  checkAndDispatch(store, addGoalAction({
+  store.dispatch(addGoalAction({
     name,
     id: generateId(),
   }))
@@ -148,14 +149,14 @@ function addTodoToDOM(todo) {
   const node = document.createElement('li')
   const text = document.createTextNode(todo.name)
   const removeBtn = createRemoveButton(() => {
-    checkAndDispatch(store, removeTodoAction(todo.id))
+    store.dispatch(removeTodoAction(todo.id))
   })
 
   node.appendChild(text)
   node.appendChild(removeBtn)
   node.style.textDecoration = todo.complete ? 'line-through' : 'none'
   node.addEventListener('click', () => {
-    checkAndDispatch(store, toggleTodoAction(todo.id))
+    store.dispatch(toggleTodoAction(todo.id))
   })
 
   document.getElementById('todos')
@@ -166,7 +167,7 @@ function addGoalToDOM(goal) {
   const node = document.createElement('li')
   const text = document.createTextNode(goal.name)
   const removeBtn = createRemoveButton(() => {
-    checkAndDispatch(store, removeGoalAction(goal.id))
+    store.dispatch(removeGoalAction(goal.id))
   })
 
   node.appendChild(text)
