@@ -90,12 +90,21 @@ const checker = (store) => (next) => (action) => {
   return next(action)
 }
 
+const logger = (store) => (next) => (action) => {
+  console.group(action.type)
+  console.log('The action: ', action)
+  const result = next(action)
+  console.log('The new state: ', store.getState())
+  console.groupEnd()
+  return result
+}
+
 
 // pass createStore the main app function/root reducer
 const store = Redux.createStore(Redux.combineReducers({
   todos,
   goals,
-}), Redux.applyMiddleware(checker))
+}), Redux.applyMiddleware(checker, logger))
 // event listener
 store.subscribe(() => {
   console.log('The new state is: ', store.getState())
