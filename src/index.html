@@ -10,25 +10,6 @@
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
   </head>
   <body>
-    <main>
-      <section>
-        <section>
-          <h1>Todo List</h1>
-          <input id='todo' type='text' placeholder='Add Todo'/>
-          <button id='todoBtn'>Add Todo</button>
-          <ul id='todos'></ul>
-        </section>
-        <section>
-          <h1>Goals</h1>
-          <input id='goal' type='text' placeholder='Add Goal'/>
-          <button id='goalBtn'>Add Goal</button>
-          <ul id='goals'></ul>
-        </section>
-      <section>
-    </main>
-
-    <hr />
-
     <div id='app'></div>
     <script src='index.js'></script>
     <script type='text/babel'>
@@ -37,7 +18,9 @@
           <ul>
             {props.items.map((item) => (
               <li key={item.id}>
-                <span>
+                <span
+                  onClick={() => props.toggle && props.toggle(item.id)}
+                  style={{textDecoration: item.complete ? 'line-through' : 'none'}}>
                   {item.name}
                 </span>
                 <button onClick={() => props.remove(item)}>
@@ -66,6 +49,10 @@
           this.props.store.dispatch(removeTodoAction(todo.id))
         }
 
+        toggleItem = (id) => {
+          this.props.store.dispatch(toggleTodoAction(id))
+        }
+
         render() {
           return (
             <div>
@@ -77,6 +64,7 @@
               />
               <button onClick={this.addItem}>Add Todo</button>
               <List
+                toggle={this.toggleItem}
                 items={this.props.todos}
                 remove={this.removeItem}
               />
