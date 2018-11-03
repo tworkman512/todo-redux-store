@@ -54,6 +54,18 @@ function receiveDataAction(todos, goals) {
   }
 }
 
+function handleDeleteTodo(todo) {
+  return (dispatch) => {
+    dispatch(removeTodoAction(todo.id))
+
+    return API.deleteTodo(todo.id)
+      .catch(() => {
+        this.props.store.dispatch(addTodoAction(todo))
+        alert('An error occurred. Please try again.')
+      })
+  }
+}
+
 // Pure function/Reducer that takes in state and an action to update the state
 function todos(state = [], action) {
   switch(action.type) {
@@ -122,10 +134,9 @@ const logger = (store) => (next) => (action) => {
   return result
 }
 
-
 // pass createStore the main app function/root reducer
 const store = Redux.createStore(Redux.combineReducers({
   todos,
   goals,
   loading,
-}), Redux.applyMiddleware(checker, logger))
+}), Redux.applyMiddleware(ReduxThunk.default, checker, logger))
