@@ -8,6 +8,7 @@ const REMOVE_TODO = 'REMOVE_TODO'
 const TOGGLE_TODO = 'TOGGLE_TODO'
 const ADD_GOAL = 'ADD_GOAL'
 const REMOVE_GOAL = 'REMOVE_GOAL'
+const RECEIVE_DATA = 'RECEIVE_DATA'
 
 // Action Creator functions
 function addTodoAction(todo) {
@@ -45,6 +46,14 @@ function removeGoalAction(id) {
   }
 }
 
+function receiveDataAction(todos, goals) {
+  return {
+    type: RECEIVE_DATA,
+    todos,
+    goals,
+  }
+}
+
 // Pure function/Reducer that takes in state and an action to update the state
 function todos(state = [], action) {
   switch(action.type) {
@@ -55,6 +64,8 @@ function todos(state = [], action) {
     case TOGGLE_TODO :
       return state.map((todo) => todo.id !== action.id ? todo :
       Object.assign({}, todo, { complete : !todo.complete }))
+    case RECEIVE_DATA :
+      return action.todos
     default :
       return state
   }
@@ -67,6 +78,8 @@ function goals(state = [], action) {
       return state.concat([action.goal])
     case REMOVE_GOAL :
       return state.filter((goal) => goal.id !== action.id)
+      case RECEIVE_DATA :
+        return action.goals
     default :
       return state
   }
