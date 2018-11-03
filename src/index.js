@@ -85,6 +85,16 @@ function goals(state = [], action) {
   }
 }
 
+// Loading Indicator Reducer
+function loading(state = true, action) {
+  switch(action.type) {
+    case RECEIVE_DATA :
+      return false
+    default :
+      return state
+  }
+}
+
 const checker = (store) => (next) => (action) => {
   if (
     action.type === ADD_TODO &&
@@ -117,4 +127,5 @@ const logger = (store) => (next) => (action) => {
 const store = Redux.createStore(Redux.combineReducers({
   todos,
   goals,
+  loading,
 }), Redux.applyMiddleware(checker, logger))
