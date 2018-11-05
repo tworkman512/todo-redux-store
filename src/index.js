@@ -54,6 +54,19 @@ function receiveDataAction(todos, goals) {
   }
 }
 
+function handleAddTodo(name, cb) {
+  return (dispatch) => {
+    return API.saveTodo(name)
+      .then((todo) => {
+        dispatch(addTodoAction(todo))
+        cb()
+      })
+      .catch(() => {
+        alert('There was an error adding this item. Please try again.')
+      })
+  }
+}
+
 function handleDeleteTodo(todo) {
   return (dispatch) => {
     dispatch(removeTodoAction(todo.id))
@@ -61,6 +74,31 @@ function handleDeleteTodo(todo) {
     return API.deleteTodo(todo.id)
       .catch(() => {
         this.props.store.dispatch(addTodoAction(todo))
+        alert('An error occurred. Please try again.')
+      })
+  }
+}
+
+function handleAddGoal(name, cb) {
+  return (dispatch) => {
+    return API.saveGoal(name)
+      .then((goal) => {
+        dispatch(addGoalAction(goal))
+        cb()
+      })
+      .catch(() => {
+        alert('There was an error adding this goal. Please try again.')
+      })
+  }
+}
+
+function handleDeleteGoal(goal) {
+  return (dispatch) => {
+    dispatch(removeGoalAction(goal.id))
+
+    return API.deleteGoal(goal.id)
+      .catch(() => {
+        dispatch(addGoalAction(goal))
         alert('An error occurred. Please try again.')
       })
   }

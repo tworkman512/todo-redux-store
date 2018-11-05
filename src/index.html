@@ -38,14 +38,10 @@
         addItem = (e) => {
           e.preventDefault()
 
-          return API.saveTodo(this.input.value)
-            .then((todo) => {
-              this.props.store.dispatch(addTodoAction(todo))
-              this.input.value = ''
-            })
-            .catch(() => {
-              alert('There was an error adding this item. Please try again.')
-            })
+          this.props.store.dispatch(handleAddTodo(
+            this.input.value,
+            () => this.input.value = ''
+          ))
         }
 
         removeItem = (todo) => {
@@ -86,26 +82,15 @@
         addItem = (e) => {
           e.preventDefault()
 
-          return API.saveGoal(this.input.value)
-            .then((goal) => {
-              this.props.store.dispatch(addGoalAction(goal))
-              this.input.value = ''
-            })
-            .catch(() => {
-              alert('There was an error adding this goal. Please try again.')
-            })
+          this.props.store.dispatch(handleAddGoal(
+            this.input.value,
+            () => this.input.value = ''
+          ))
         }
 
         removeItem = (goal) => {
-          this.props.store.dispatch(removeGoalAction(goal.id))
-
-          return API.deleteGoal(goal.id)
-            .catch(() => {
-              this.props.store.dispatch(addGoalAction(goal))
-              alert('An error occurred. Please try again.')
-            })
+          this.props.store.dispatch(handleDeleteGoal(goal))
         }
-
 
         render() {
           return (
