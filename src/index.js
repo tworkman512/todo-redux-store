@@ -116,6 +116,19 @@ function handleDeleteGoal(goal) {
   }
 }
 
+function handleInitialData() {
+  return (dispatch) => {
+    Promise.all([
+    API.fetchTodos(),
+    API.fetchGoals()
+  ]).then(([ todos, goals ]) => {
+    // console.log('Todos', todos)
+    // console.log('Goals', goals)
+    dispatch(receiveDataAction(todos, goals))
+  })
+  }
+}
+
 // Pure function/Reducer that takes in state and an action to update the state
 function todos(state = [], action) {
   switch(action.type) {
