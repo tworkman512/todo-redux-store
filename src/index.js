@@ -79,6 +79,18 @@ function handleDeleteTodo(todo) {
   }
 }
 
+function handleToggle(id) {
+  return (dispatch) => {
+    dispatch(toggleTodoAction(id))
+
+    return API.saveTodoToggle(id)
+      .catch(() => {
+        dispatch(toggleTodoAction(id))
+        alert('An error occurred. Please try to TOGGLE again.')
+      })
+  }
+}
+
 function handleAddGoal(name, cb) {
   return (dispatch) => {
     return API.saveGoal(name)
