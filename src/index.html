@@ -72,6 +72,25 @@
         }
       }
 
+      class ContainerGoals extends React.Component {
+        render() {
+          return (
+            <Context.Consumer>
+              {(store) => (
+                const { goals } = store.getState()
+
+                return (
+                  <Goals
+                    goals={goals}
+                    dispatch={store.dispatch}
+                  />
+                )
+              )}
+            </Contect.Consumer>
+          )
+        }
+      }
+
       class Goals extends React.Component {
         addItem = (e) => {
           e.preventDefault()
@@ -117,7 +136,7 @@
 
         render() {
           const { store } = this.props
-          const { todos, goals, loading } = store.getState()
+          const { todos, loading } = store.getState()
 
           if (loading === true) {
             return <h3>Loading...</h3>
@@ -129,10 +148,7 @@
                 todos={todos}
                 store={this.props.store}
               />
-              <Goals
-                goals={goals}
-                store={this.props.store}
-              />
+              <ContainerGoals />
             </div>
           )
         }
